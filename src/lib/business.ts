@@ -17,7 +17,7 @@ export const BUSINESS = {
   claimSource: "Páginas Amarillas",
   /** Eslogan literal del negocio. */
   slogan: "Para tí… TODO en un MISMO lugar",
-  promise: "Estudiamos tu imagen. Tratamientos capilares.",
+  promise: "Estudiamos tu imagen y hacemos tratamientos capilares",
   /** No se ha encontrado WhatsApp oficial: el CTA es llamar. */
   whatsapp: null,
   social: [

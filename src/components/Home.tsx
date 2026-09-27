@@ -135,9 +135,12 @@ function Counter({ to, prefix = "", suffix = "" }: { to: number; prefix?: string
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-20%" });
   const mv = useMotionValue(0);
-  const [val, setVal] = useState(0);
+  // El valor real se pinta en el HTML del servidor: sin JS (o para un buscador)
+  // el contador dice la verdad en vez de 0. La animacion arranca igualmente.
+  const [val, setVal] = useState(to);
   useEffect(() => {
     if (!inView) return;
+    setVal(0);
     const controls = animate(mv, to, {
       duration: 1.8,
       ease: [0.22, 1, 0.36, 1],
@@ -301,8 +304,8 @@ function Specialists() {
         </div>
         <div className="md:col-span-6 md:col-start-7">
           <p className="text-lg leading-relaxed text-cream/85 md:text-xl">
-            {BUSINESS.claim} dedicándose a la peluquería, la barbería y la estética en Alcoi. Dos
-            locales, el mismo equipo y el mismo criterio: {BUSINESS.promise.toLowerCase()}
+            {BUSINESS.claim} en la peluquería, la barbería y la estética en Alcoi. Dos locales, el
+            mismo criterio: {BUSINESS.promise.toLowerCase()}
           </p>
 
           <div className="mt-10 grid grid-cols-3 gap-6 border-t border-cream/10 pt-8">
