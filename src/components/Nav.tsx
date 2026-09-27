@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { MAIN, mapsSearch } from "@/lib/business";
 
 const links = [
   { href: "#servicios", label: "Servicios" },
@@ -34,7 +35,7 @@ export function Nav() {
       >
         <a href="#top" className="group flex items-center gap-2.5">
           <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-champagne to-gold text-carbon">
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M4 20c3-8 5-12 8-16 1 6 3 10 8 16" strokeLinecap="round" />
             </svg>
           </span>
@@ -48,27 +49,36 @@ export function Nav() {
             <li key={l.href}>
               <a
                 href={l.href}
-                className="group relative rounded-full px-4 py-2 text-[13px] uppercase tracking-[0.14em] text-cream/75 transition-colors hover:text-cream"
+                className="group relative rounded-full px-4 py-2 text-[13px] uppercase tracking-[0.14em] text-cream/85 transition-colors hover:text-cream"
               >
                 <span className="relative z-10">{l.label}</span>
-                <span className="absolute inset-0 scale-75 rounded-full bg-cream/5 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100" />
+                <span className="absolute inset-0 scale-75 rounded-full bg-cream/10 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100" />
               </a>
             </li>
           ))}
         </ul>
+
+        {/* Teléfono real siempre visible en la barra: es el dato que se vende. */}
+        <a
+          href={MAIN.phoneHref}
+          className="hidden rounded-full border border-champagne/40 px-4 py-2 text-[12px] tracking-[0.16em] text-cream transition-colors hover:bg-champagne hover:text-carbon md:inline-flex"
+        >
+          {MAIN.phone}
+        </a>
 
         <a
           href="#contacto"
           className="hidden md:inline-flex items-center gap-2 rounded-full bg-cream px-4 py-2 text-[12px] uppercase tracking-[0.18em] text-carbon transition-all duration-300 hover:bg-champagne hover:shadow-[0_10px_30px_-8px_rgba(214,179,106,0.6)]"
         >
           Reservar
-          <span className="text-champagne group-hover:text-carbon">→</span>
+          <span className="text-champagne transition-colors group-hover:text-carbon">→</span>
         </a>
 
         <button
-          aria-label="Abrir menú"
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="grid h-9 w-9 place-items-center rounded-full border border-cream/15 text-cream md:hidden"
+          className="grid h-9 w-9 place-items-center rounded-full border border-cream/20 text-cream md:hidden"
         >
           <span className="relative block h-3 w-4">
             <span className={`absolute left-0 top-0 h-px w-full bg-cream transition-transform ${open ? "translate-y-1.5 rotate-45" : ""}`} />
@@ -91,7 +101,7 @@ export function Nav() {
               <a
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-xl px-4 py-3 text-lg font-display text-cream hover:bg-cream/5"
+                className="block rounded-xl px-4 py-3 text-lg font-display text-cream hover:bg-cream/10"
               >
                 {l.label}
               </a>
@@ -99,9 +109,28 @@ export function Nav() {
           ))}
           <li>
             <a
+              href={MAIN.phoneHref}
+              onClick={() => setOpen(false)}
+              className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-champagne/40 px-4 py-3 text-sm tracking-[0.16em] text-cream"
+            >
+              Llamar {MAIN.phone}
+            </a>
+          </li>
+          <li>
+            <a
+              href={mapsSearch(MAIN)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center rounded-full bg-champagne px-4 py-3 text-sm uppercase tracking-[0.18em] text-carbon"
+            >
+              Cómo llegar
+            </a>
+          </li>
+          <li>
+            <a
               href="#contacto"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-champagne px-4 py-3 text-sm uppercase tracking-[0.18em] text-carbon"
+              className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-cream px-4 py-3 text-sm uppercase tracking-[0.18em] text-carbon"
             >
               Reservar
             </a>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import type { ElementType } from "react";
 
 interface Props {
@@ -22,8 +23,19 @@ export function Typewriter({
   const [started, setStarted] = useState(false);
   const [done, setDone] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
+  // Con movimiento reducido el texto aparece entero: no se escribe letra a letra.
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
+    if (reduceMotion) {
+      setStarted(true);
+      setDone(true);
+      setI(text.length);
+    }
+  }, [reduceMotion, text]);
+
+  useEffect(() => {
+    if (reduceMotion) return;
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
@@ -39,10 +51,10 @@ export function Typewriter({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [reduceMotion]);
 
   useEffect(() => {
-    if (!started) return;
+    if (!started || reduceMotion) return;
     let raf = 0;
     let timeout: ReturnType<typeof setTimeout>;
     const tick = () => {
@@ -65,12 +77,12 @@ export function Typewriter({
       clearTimeout(timeout!);
       cancelAnimationFrame(raf);
     };
-  }, [started, text, speed, startDelay]);
+  }, [started, text, speed, startDelay, reduceMotion]);
 
   return (
     <Tag ref={ref as never} className={className} aria-label={text}>
       <span aria-hidden="true">{text.slice(0, i)}</span>
-      {caret && (
+      {caret && !reduceMotion && (
         <span
           aria-hidden="true"
           className={`ml-1 inline-block h-[0.9em] w-[2px] translate-y-[2px] bg-champagne align-middle ${

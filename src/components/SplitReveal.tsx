@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { HTMLAttributes } from "react";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -18,9 +18,10 @@ export function SplitReveal({
   animateOnMount = false,
   ...rest
 }: Props) {
+  const reduceMotion = useReducedMotion();
   const words = text.split(" ");
   const anim = { y: "0%", opacity: 1, filter: "blur(0px)" };
-  const initial = { y: "110%", opacity: 0, filter: "blur(8px)" };
+  const initial = reduceMotion ? false : { y: "110%", opacity: 0, filter: "blur(8px)" };
   return (
     <Tag className={className} {...(rest as object)}>
       {words.map((word, i) => (

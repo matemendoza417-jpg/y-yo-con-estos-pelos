@@ -79,6 +79,54 @@
     background: var(--champagne);
     color: var(--carbon);
   }
+
+  /* Hueco para que la barra de contacto fija no tape el final del documento. */
+  @media (max-width: 767px) {
+    body {
+      padding-bottom: calc(64px + env(safe-area-inset-bottom));
+    }
+  }
+
+  /*
+   * Si el JS no arranca, nada añade la clase .js. Framer-motion escribe estilos
+   * inline (opacity:0 / transform) en el HTML de servidor, así que sin JS los
+   * titulares y los bloques animados se quedarían invisibles para siempre. Con
+   * esta regla se muestra todo: el sitio es legible sin JavaScript.
+   */
+  html:not(.js) [style] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /*
+   * Accesibilidad de animaciones (WCAG 2.3.3).
+   * Con movimiento reducido se congelan las animaciones Infinite y se detiene el
+   * desplazamiento suave. El contenido no depende de ninguna animación para ser
+   * visible: no hay bloques con opacity:0 pendientes de un observer.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .animate-marquee,
+    .animate-float-slow,
+    .text-shimmer {
+      animation: none !important;
+    }
+    .text-shimmer {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--champagne);
+    }
+  }
 }
 
 @utility font-display {
